@@ -28,116 +28,112 @@ export function DonationCard({
       window.open(`https://solscan.io/tx/${txHashFull}`, '_blank');
     }
   };
-  const statusColorClass =
-    status === "Confirmed"
-      ? "bg-[color:var(--success-700)] text-[color:var(--primary-foreground)]"
-      : status === "Pending"
-        ? "bg-[color:var(--warning-600)] text-[color:var(--primary-foreground)]"
-        : "bg-[color:var(--destructive-600)] text-[color:var(--primary-foreground)]"
+
+  const statusConfig = {
+    Confirmed: {
+      bg: "bg-emerald-500/10",
+      text: "text-emerald-600 dark:text-emerald-400",
+      dot: "bg-emerald-500",
+      border: "border-emerald-500/20"
+    },
+    Pending: {
+      bg: "bg-amber-500/10",
+      text: "text-amber-600 dark:text-amber-400",
+      dot: "bg-amber-500",
+      border: "border-amber-500/20"
+    },
+    Failed: {
+      bg: "bg-red-500/10",
+      text: "text-red-600 dark:text-red-400",
+      dot: "bg-red-500",
+      border: "border-red-500/20"
+    }
+  };
+
+  const statusStyle = statusConfig[status];
 
   return (
-    <article
-      role="region"
-      aria-label="Donation summary"
-      className="relative w-full overflow-hidden rounded-[24px] bg-[var(--card)] text-[var(--card-foreground)] shadow"
-    >
-      {/* Left red ribbon with notch */}
-      <div className="absolute inset-y-0 left-0 w-[86px]">
-        <svg className="h-full w-full" viewBox="0 0 86 300" preserveAspectRatio="none" aria-hidden="true">
-          <path
-            d="
-              M0,24
-              C0,10.745 10.745,0 24,0
-              H86
-              V120
-              L60,134
-              V300
-              H24
-              C10.745,300 0,289.255 0,276
-              Z
-            "
-            fill="var(--brand-red)"
-          />
-        </svg>
-
-        <div
-          className="pointer-events-none absolute left-0 top-0 flex h-full w-[86px] items-start justify-center pt-7"
-          aria-hidden="true"
-        >
-          <span className="text-[color:var(--primary-foreground)] text-2xl font-bold">#{rank}</span>
+    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-card to-card/80 border border-border/50 shadow-lg hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      
+      {/* Left red accent */}
+      <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-red-500 to-red-600"></div>
+      
+      {/* Rank badge */}
+      <div className="absolute top-4 left-4 z-10">
+        <div className="bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold text-sm shadow-lg">
+          #{rank}
         </div>
       </div>
 
-      {/* Watermark logo behind amount */}
-      <img
-        src="/assets/logovrl.svg"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute left-[112px] top-0 h-full w-auto opacity-[0.18] select-none"
-        style={{ mixBlendMode: "normal" }}
-      />
-
-      {/* Main content layout */}
-      <div className="relative grid grid-cols-1 gap-6 px-6 py-6 pl-[120px] md:grid-cols-[1fr,1.2fr] md:items-center md:gap-8 md:px-8 md:py-8 md:pl-[136px]">
-        {/* Amount on the left */}
-        <div className="flex items-center">
-          <p className="text-[color:var(--primary-foreground)] text-5xl font-extrabold tracking-tight md:text-6xl lg:text-7xl">
-            {amount}
-          </p>
-        </div>
-
-        {/* Right details */}
-        <div className="flex flex-col gap-7">
-          {/* Top row: org + status + timestamp */}
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-center gap-3">
-              {/* Rounded square icon with building */}
-              <div className="rounded-[14px] bg-[color:var(--muted)]/10 p-2">
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                  className="text-[color:var(--muted-foreground)]"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M4 20h16v-2H4v2Zm2-4h12V5a1 1 0 0 0-1-1h-3V3h-2v1H9a1 1 0 0 0-1 1v11Zm2-2V6h8v8H8Zm2-2h2V8h-2v4Zm3 0h2V8h-2v4Zm-6 7h2v-2H7v2Zm8 0h2v-2h-2v2Z"
-                  />
-                </svg>
+      {/* Main content */}
+      <div className="relative p-6 pl-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+          {/* Left: Amount */}
+          <div className="text-center lg:text-left">
+            <div className="relative">
+              {/* Logo watermark */}
+              <div className="absolute -top-4 -right-4 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
+                <img 
+                  src="/assets/logovrl.svg" 
+                  alt="" 
+                  className="w-16 h-16 object-contain"
+                />
               </div>
-              <div className="leading-tight">
-                <div className="text-[color:var(--primary-foreground)] text-base font-semibold">{orgName}</div>
-                <div className="text-[color:var(--muted-foreground)] text-sm">Ref: {refId}</div>
+              
+              <div className="text-4xl lg:text-5xl font-bold text-primary mb-2 group-hover:text-primary/90 transition-colors">
+                {amount}
               </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              {/* Status pill */}
-              <span
-                className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium ${statusColorClass}`}
-                aria-label={`Status: ${status}`}
-              >
-                <span className="inline-block h-2 w-2 rounded-full bg-[color:var(--success-400)]" />
-                {status}
-              </span>
-
-              {/* Timestamp */}
-              <time className="text-[color:var(--muted-foreground)] text-sm" title={timestamp}>
-                {timestamp}
-              </time>
+              <div className="text-sm text-muted-foreground font-medium">
+                Donation Amount
+              </div>
             </div>
           </div>
 
-          {/* Transaction hash + explorer button */}
-          <div className="flex items-center">
-            <div className="flex w-full overflow-hidden rounded-full border border-[color:var(--border)] bg-[color:var(--accent)]/5">
-              <div className="flex-1 px-6 py-3">
-                <code className="font-mono text-[color:var(--primary-foreground)]/90 text-base italic">{txHash}</code>
+          {/* Center: Organization & Status */}
+          <div className="space-y-4">
+            {/* Organization */}
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
               </div>
+              <div>
+                <div className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">
+                  {orgName}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Ref: {refId}
+                </div>
+              </div>
+            </div>
+
+            {/* Status & Date */}
+            <div className="flex items-center gap-4">
+              <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium border ${statusStyle.bg} ${statusStyle.text} ${statusStyle.border}`}>
+                <div className={`w-2 h-2 rounded-full ${statusStyle.dot} animate-pulse`}></div>
+                {status}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {timestamp}
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Transaction Hash & Action */}
+          <div className="space-y-3">
+            <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              Transaction Hash
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg border border-border/30 group-hover:bg-muted/50 transition-colors">
+              <code className="font-mono text-foreground flex-1 truncate text-sm">
+                {txHash}
+              </code>
               <button
                 type="button"
-                className="min-w-[140px] bg-[color:var(--success-700)] px-6 py-3 text-right text-lg font-semibold text-[color:var(--primary-foreground)] hover:bg-[color:var(--success-600)] focus:outline-none"
+                className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 hover:scale-105 active:scale-95"
                 onClick={handleExplorerClick}
                 aria-label={`Open in ${explorerLabel}`}
               >
@@ -147,7 +143,7 @@ export function DonationCard({
           </div>
         </div>
       </div>
-    </article>
+    </div>
   )
 }
 
