@@ -9,7 +9,7 @@ type DonationCardProps = {
   timestamp?: string // preformatted timestamp
   txHash?: string
   explorerLabel?: string
-  onExplorerClick?: () => void
+  txHashFull?: string // full transaction hash for the link
 }
 
 export function DonationCard({
@@ -21,8 +21,13 @@ export function DonationCard({
   timestamp = "Oct 2, 2025, 09:24 PM",
   txHash = "test_tx_hash_001..._tx_hash_001",
   explorerLabel = "solscan",
-  onExplorerClick,
+  txHashFull = "",
 }: DonationCardProps) {
+  const handleExplorerClick = () => {
+    if (txHashFull) {
+      window.open(`https://solscan.io/tx/${txHashFull}`, '_blank');
+    }
+  };
   const statusColorClass =
     status === "Confirmed"
       ? "bg-[color:var(--success-700)] text-[color:var(--primary-foreground)]"
@@ -133,7 +138,7 @@ export function DonationCard({
               <button
                 type="button"
                 className="min-w-[140px] bg-[color:var(--success-700)] px-6 py-3 text-right text-lg font-semibold text-[color:var(--primary-foreground)] hover:bg-[color:var(--success-600)] focus:outline-none"
-                onClick={onExplorerClick}
+                onClick={handleExplorerClick}
                 aria-label={`Open in ${explorerLabel}`}
               >
                 {explorerLabel}

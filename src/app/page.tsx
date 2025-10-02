@@ -296,7 +296,7 @@ export default async function Home() {
                                 })}
                                 txHash={`${d.tx_hash.slice(0, 20)}...${d.tx_hash.slice(-16)}`}
                                 explorerLabel="solscan"
-                                onExplorerClick={() => window.open(`https://solscan.io/tx/${d.tx_hash}`, '_blank')}
+                                txHashFull={d.tx_hash}
                             />
                         ))}
                         
