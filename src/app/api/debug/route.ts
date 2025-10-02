@@ -9,9 +9,10 @@ export async function GET() {
     await prisma.$connect();
     console.log('✅ Database connected successfully');
     
-    // Test if tables exist
+    // Test if tables exist (PostgreSQL)
     const tables = await prisma.$queryRaw`
-      SELECT name FROM sqlite_master WHERE type='table';
+      SELECT table_name FROM information_schema.tables 
+      WHERE table_schema = 'public' AND table_type = 'BASE TABLE';
     `;
     console.log('📊 Available tables:', tables);
     
