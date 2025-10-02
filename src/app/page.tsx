@@ -58,7 +58,7 @@ async function getProjectConfig() {
 		                (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3001');
 		
 		const response = await fetch(`${baseUrl}/api/config`, {
-			cache: 'no-store',
+			next: { revalidate: 60 },
 			headers: {
 				'Content-Type': 'application/json'
 			}
