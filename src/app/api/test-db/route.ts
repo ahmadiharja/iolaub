@@ -34,7 +34,7 @@ export async function GET() {
 			status: 'failed',
 			message: 'Database connection failed',
 			error: error instanceof Error ? error.message : 'Unknown error',
-			code: (error as any)?.code || 'UNKNOWN',
+			code: (error as { code?: string })?.code || 'UNKNOWN',
 			timestamp: new Date().toISOString()
 		}, { status: 500 });
 	} finally {

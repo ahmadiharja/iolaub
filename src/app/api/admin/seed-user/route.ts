@@ -38,7 +38,7 @@ export async function POST() {
 		
 		// If database is not available, provide fallback response
 		const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-		const errorCode = (error as any)?.code;
+		const errorCode = (error as { code?: string })?.code;
 		
 		if (errorCode === 'P6001' || errorMessage.includes('URL must start with')) {
 			return NextResponse.json({ 
