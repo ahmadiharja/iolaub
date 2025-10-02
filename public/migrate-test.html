@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migration Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        button { background: #0070f3; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0051cc; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 6px; white-space: pre-wrap; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Database Migration Tool</h1>
+    <p>Click the button below to migrate data to production database:</p>
+    
+    <button onclick="runMigration()">Run Migration</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        async function runMigration() {
+            const button = document.querySelector('button');
+            const resultDiv = document.getElementById('result');
+            
+            button.disabled = true;
+            button.textContent = 'Running Migration...';
+            resultDiv.innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/migrate-local-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ Migration Successful!\n\nUsers: ${data.counts.users}\nDonations: ${data.counts.donations}\nConfigs: ${data.counts.configs}\n\nTimestamp: ${data.timestamp}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Migration Failed!\n\nError: ${data.message}\n\nDetails: ${data.error || 'Unknown error'}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Request Failed!\n\nError: ${error.message}`;
+            }
+            
+            button.disabled = false;
+            button.textContent = 'Run Migration';
+        }
+    </script>
+</body>
+</html>
