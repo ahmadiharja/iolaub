@@ -7,7 +7,7 @@ import MarqueeBanner from "@/components/marquee-banner";
 import MobileArticleReader from "@/components/mobile-article-reader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+// Table components removed - using card-based layout instead
 import CopyButton from "@/components/copy-button";
 import Gallery from "@/components/gallery";
 import { prisma } from "@/lib/prisma";
@@ -155,7 +155,7 @@ export default async function Home() {
                         </p>
                         
                         <p className="text-pretty leading-relaxed text-muted-foreground">
-                            The scale of destruction extends far beyond human casualties. More than 100,000 homes have sustained damage ranging from minor structural issues to complete destruction, displacing thousands of families who now face uncertain futures. The agricultural sector, a cornerstone of Vietnam's economy, has not been spared—approximately 14,000 hectares of farmland lie devastated, threatening food security and livelihoods.
+                            The scale of destruction extends far beyond human casualties. More than 100,000 homes have sustained damage ranging from minor structural issues to complete destruction, displacing thousands of families who now face uncertain futures. The agricultural sector, a cornerstone of Vietnam&apos;s economy, has not been spared—approximately 14,000 hectares of farmland lie devastated, threatening food security and livelihoods.
                         </p>
 
                         <p className="text-pretty leading-relaxed text-muted-foreground">
@@ -189,7 +189,7 @@ export default async function Home() {
                             </p>
                             
                             <p className="text-pretty leading-relaxed text-muted-foreground">
-                                The scale of destruction extends far beyond human casualties. More than 100,000 homes have sustained damage ranging from minor structural issues to complete destruction, displacing thousands of families who now face uncertain futures. The agricultural sector, a cornerstone of Vietnam's economy, has not been spared—approximately 14,000 hectares of farmland lie devastated, threatening food security and livelihoods.
+                                The scale of destruction extends far beyond human casualties. More than 100,000 homes have sustained damage ranging from minor structural issues to complete destruction, displacing thousands of families who now face uncertain futures. The agricultural sector, a cornerstone of Vietnam&apos;s economy, has not been spared—approximately 14,000 hectares of farmland lie devastated, threatening food security and livelihoods.
                             </p>
 
                             <p className="text-pretty leading-relaxed text-muted-foreground">
@@ -197,7 +197,7 @@ export default async function Home() {
                             </p>
 
                             <p className="text-pretty leading-relaxed text-muted-foreground">
-                                Economic implications of the disaster are becoming increasingly apparent as businesses remain shuttered and supply chains disrupted. The tourism industry, vital to Vietnam's economy, faces significant challenges with damaged infrastructure and cancelled flights affecting visitor arrivals during the peak season.
+                                Economic implications of the disaster are becoming increasingly apparent as businesses remain shuttered and supply chains disrupted. The tourism industry, vital to Vietnam&apos;s economy, faces significant challenges with damaged infrastructure and cancelled flights affecting visitor arrivals during the peak season.
                             </p>
                         </div>
                         

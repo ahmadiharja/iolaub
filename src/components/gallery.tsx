@@ -36,15 +36,16 @@ export default function Gallery() {
     document.body.style.overflow = 'unset';
   };
 
-  // Close modal on ESC key press
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      closeModal();
-    }
-  };
+  // handleKeyDown moved inside useEffect to fix dependency warning
 
   // Add event listener for ESC key
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);

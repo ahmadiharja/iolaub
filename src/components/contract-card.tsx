@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { Card } from '@/components/ui/card';
-import CopyButton from '@/components/copy-button';
+// CopyButton removed - using inline copy functionality
 
 interface ProjectConfig {
   contract_address: string;

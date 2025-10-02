@@ -5,7 +5,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import ExtensionHandler from "@/components/extension-handler";
-import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

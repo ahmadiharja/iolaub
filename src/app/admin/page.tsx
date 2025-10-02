@@ -8,12 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import type { Donation, DonationStatus } from "@/types/donation";
 
-function useSupabase() { return null as any }
+function useSupabase() { return null as unknown }
 
 export default function AdminPage() {
     const supabase = useSupabase();
@@ -27,7 +27,7 @@ export default function AdminPage() {
         // Check our own admin cookie
         fetch('/api/me').then(async (r) => {
             const ok = r.ok;
-            setSession(ok ? ({} as any) : null);
+            setSession(ok ? ({} as Session) : null);
         }).catch(() => setSession(null));
     }, []);
 
@@ -45,7 +45,7 @@ export default function AdminPage() {
             const j = await res.json();
             toast.error(j.error ?? 'Failed to sign in');
         } else {
-            setSession({} as any);
+            setSession({} as Session);
         }
     }
 
