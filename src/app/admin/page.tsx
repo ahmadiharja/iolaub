@@ -13,10 +13,7 @@ import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import type { Donation, DonationStatus } from "@/types/donation";
 
-function useSupabase() { return null as unknown }
-
 export default function AdminPage() {
-    const supabase = useSupabase();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [session, setSession] = useState<Session | null>(null);
@@ -135,7 +132,11 @@ export default function AdminPage() {
 					<Button asChild variant="outline">
 						<Link href="/admin/config">Project Config</Link>
 					</Button>
-					<Button variant="outline" onClick={() => supabase.auth.signOut()}>Sign out</Button>
+					<Button variant="outline" onClick={() => {
+						// Clear session and redirect to login
+						document.cookie = 'admin-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+						window.location.reload();
+					}}>Sign out</Button>
 				</div>
 			</div>
 
