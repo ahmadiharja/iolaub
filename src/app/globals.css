@@ -158,10 +158,18 @@ h1, h2, h3, h4, .font-serif {
 
 /* Logo watermark styling */
 .logo-watermark {
-  filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.8) contrast(0.8);
-  transition: filter 0.3s ease;
+  opacity: 0.1;
+  transition: opacity 0.3s ease;
+}
+
+.logo-watermark:hover {
+  opacity: 0.2;
 }
 
 .dark .logo-watermark {
-  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.9) contrast(1.2);
+  opacity: 0.15;
+}
+
+.dark .logo-watermark:hover {
+  opacity: 0.25;
 }
