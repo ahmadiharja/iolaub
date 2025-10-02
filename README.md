@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bualoi Relief Fund 🌊
 
-## Getting Started
+A Next.js cryptocurrency charity platform supporting Typhoon Bualoi relief efforts in Vietnam. Built with modern web technologies to provide transparent, blockchain-verified donations.
 
-First, run the development server:
+## 🌟 Features
 
+- **Modern Design**: Beautiful, responsive UI with dark/light theme support
+- **Crypto Integration**: Contract address display with copy functionality
+- **Live Donations**: Real-time donation tracking with blockchain verification  
+- **Admin Dashboard**: Secure admin panel for managing donations and configuration
+- **Gallery**: Community-sourced relief effort photos
+- **Mobile Optimized**: Fully responsive design for all devices
+- **Database**: Prisma ORM with PostgreSQL/SQLite support
+
+## 🚀 Tech Stack
+
+- **Frontend**: Next.js 15, React, TypeScript
+- **Styling**: Tailwind CSS, Shadcn/UI
+- **Database**: Prisma ORM, PostgreSQL (via Prisma Accelerate)
+- **Authentication**: Custom auth with bcrypt
+- **Deployment**: Vercel
+
+## 🛠️ Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/ahmadiharja/iolaub.git
+cd iolaub
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+# Copy and configure your environment variables
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Set up the database:
+```bash
+npx prisma generate
+npx prisma db push
+```
 
-## Learn More
+5. Run the development server:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📊 Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Required environment variables:
 
-## Deploy on Vercel
+```env
+DATABASE_URL="your_database_connection_string"
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🗄️ Database Schema
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The application uses the following main models:
+- **User**: Admin authentication
+- **Donation**: Transaction records
+- **ProjectConfig**: Dynamic configuration (Twitter links, contract addresses, etc.)
+
+## 🔧 Admin Panel
+
+Access the admin panel at `/admin` to:
+- View and manage donations
+- Configure project settings (Twitter links, contract addresses)
+- Manage user accounts
+
+Default admin credentials can be set via environment variables.
+
+## 🎨 Components
+
+Key components include:
+- **HeroCarousel**: Image carousel with gradient overlay
+- **ContractCard**: ATM-style contract address display
+- **Gallery**: Photo gallery with modal view
+- **DonationTable**: Modern card-based donation display
+- **MarqueeBanner**: Scrolling emergency banner
+
+## 🚀 Deployment
+
+### Deploy to Vercel
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Configure environment variables in Vercel dashboard
+4. Deploy!
+
+The application is optimized for Vercel deployment with proper configuration files included.
+
+## 📱 Features Overview
+
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
+- **Theme Support**: Automatic dark/light mode with system preference detection
+- **Real-time Data**: Live donation feeds and configuration updates
+- **Modern UI**: Clean, professional design with smooth animations
+- **Accessibility**: Built with accessibility best practices
+- **Performance**: Optimized images, fonts, and code splitting
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🆘 Support
+
+For support and questions, please open an issue on GitHub or contact the development team.
+
+---
+
+**Buy $BUALOI, Save Lives.** 🌊💙
