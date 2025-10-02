@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([email])
+}
+
+model Donation {
+  id             String   @id @default(uuid())
+  tx_hash        String   @unique
+  from_wallet    String?
+  to_wallet      String?
+  amount         Decimal
+  datetime       DateTime @default(now())
+  bank_reference String?
+  recipient_org  String?
+  status         String   @default("Pending")
+  @@index([datetime(sort: Desc)])
+  @@index([status])
+}
+
+model ProjectConfig {
+  id                    String   @id @default(uuid())
+  twitter_official      String?
+  twitter_community     String?
+  pump_fun_address      String?
+  contract_address      String?
+  dexscreener_pair      String?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+  
+  @@map("project_configs")
+}
+

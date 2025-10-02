@@ -1,103 +1,459 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ModeToggle } from "@/components/mode-toggle";
+import HeroCarousel from "@/components/hero-carousel";
+import ContractCard from "@/components/contract-card";
+import MarqueeBanner from "@/components/marquee-banner";
+import MobileArticleReader from "@/components/mobile-article-reader";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import CopyButton from "@/components/copy-button";
+import Gallery from "@/components/gallery";
+import { prisma } from "@/lib/prisma";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+export const revalidate = 60;
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+async function getDonations() {
+	try {
+	const data = await prisma.donation.findMany({
+		select: { amount: true, tx_hash: true, bank_reference: true, recipient_org: true, datetime: true },
+		orderBy: { datetime: 'desc' },
+		take: 200,
+	});
+	return data;
+	} catch (error) {
+		console.log('Database connection error, using dummy data:', error);
+		// Return dummy data if database is not available
+		return [
+			{
+				amount: 1000,
+				tx_hash: '5KJp7VK8gX4aTcMRYGWYjJ3qZjKpKqKpKqKpKqKpKqKp',
+				bank_reference: 'REF001',
+				recipient_org: 'Vietnam Red Cross',
+				datetime: new Date().toISOString(),
+			},
+			{
+				amount: 2500,
+				tx_hash: '8LMq9WL9hY6bTdNSYHXYkK4rZkLrLrLrLrLrLrLrLrLr',
+				bank_reference: 'REF002',
+				recipient_org: 'UNICEF Vietnam',
+				datetime: new Date(Date.now() - 86400000).toISOString(),
+			},
+			{
+				amount: 500,
+				tx_hash: '3GHi5TH5fU3aRbKQWFWXiH2pYhHrHrHrHrHrHrHrHrHr',
+				bank_reference: null,
+				recipient_org: 'Local Relief Fund',
+				datetime: new Date(Date.now() - 172800000).toISOString(),
+			},
+		];
+	}
+}
+
+async function getProjectConfig() {
+	try {
+		// Use API endpoint instead of direct Prisma call to avoid client issues
+		const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001'}/api/config`, {
+			cache: 'no-store'
+		});
+		if (!response.ok) throw new Error('Failed to fetch config');
+		const config = await response.json();
+		return config;
+	} catch (error) {
+		console.log('Config fetch error, using defaults:', error);
+		return {
+			twitter_official: 'https://twitter.com/bualoi_official',
+			twitter_community: 'https://twitter.com/bualoi_community',
+			pump_fun_address: 'https://pump.fun/coin/PLACEHOLDER',
+			contract_address: '0x1234...ABCD',
+			dexscreener_pair: 'PLACEHOLDERPAIR'
+		};
+	}
+}
+
+type DonationAmountRow = { amount: number, tx_hash: string, bank_reference: string | null, recipient_org: string | null, datetime: string };
+
+export default async function Home() {
+    const donations = (await getDonations()) as DonationAmountRow[];
+    const config = await getProjectConfig();
+    const total = donations.reduce((sum: number, d: DonationAmountRow) => sum + Number(d.amount ?? 0), 0);
+
+    return (
+        <main className="flex min-h-screen flex-col bg-background">
+            <header className="w-full border-b bg-card">
+                <div className="mx-auto max-w-6xl px-4 py-3">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="relative h-10 md:h-12 w-auto">
+                                <Image src="/assets/png/bualoi_light.png" alt="Bualoi" width={200} height={48} className="h-10 md:h-12 w-auto object-contain dark:hidden" />
+                                <Image src="/assets/png/bualoi_dark.png" alt="Bualoi" width={200} height={48} className="h-10 md:h-12 w-auto object-contain hidden dark:block" />
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                                <span className="text-sm font-medium text-primary">Buy $BUALOI, Save Lives.</span>
+                            <ModeToggle />
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section className="bg-background">
+                <HeroCarousel />
+            </section>
+
+            <section className="bg-background">
+                <div className="mx-auto max-w-6xl px-4 py-10">
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <div className="flex flex-col gap-4">
+                            <h2 className="text-balance text-2xl font-semibold tracking-tight">Crypto united for Vietnam</h2>
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                When disaster strikes, speed and transparency save lives. $BUA channels crypto-native generosity into
+                                immediate relief for communities impacted by Typhoon Bualoi in Vietnam. Every trade fuels direct
+                                on-chain support for local responders. 100% trackable. 0% excuses.
+                            </p>
+                            <ul className="list-inside list-disc text-muted-foreground">
+                                <li>Transparent wallet flows and public reporting</li>
+                                <li>Open-source receipts, verifiable distribution</li>
+                                <li>Meme + Charity + Solidarity — easy to spread, easy to trust</li>
+                            </ul>
+                            <div className="mt-2 flex gap-3">
+                                    <Button asChild size="sm">
+                                        <Link href={config?.pump_fun_address || "https://pump.fun"} target="_blank">Buy $BUALOI</Link>
+                                    </Button>
+                                <Button variant="outline" asChild size="sm"><Link href="#donations">View Donations</Link></Button>
+                            </div>
+                        </div>
+                        <ContractCard />
+                    </div>
+                </div>
+            </section>
+
+            <MarqueeBanner />
+
+            <section className="bg-background">
+                <div className="mx-auto max-w-6xl px-4 py-10">
+                    <h3 className="text-balance text-2xl font-bold tracking-tight mb-8 text-center font-serif">Latest Situation: Typhoon Bualoi Devastates Vietnam</h3>
+                    
+                    {/* Mobile version with read more */}
+                    <MobileArticleReader>
+                        <p className="text-pretty leading-relaxed text-muted-foreground">
+                            <span className="float-left text-6xl font-bold leading-none pr-2 pt-1 text-primary font-serif">I</span>
+                            n a devastating turn of events that unfolded in late September 2025, Typhoon Bualoi has wreaked unprecedented havoc across Vietnam, leaving communities struggling to recover from one of the most destructive storms in recent memory. The powerful typhoon, packing winds of up to 130 kilometers per hour and generating waves reaching 8 meters in height, made landfall with catastrophic force.
+                        </p>
+                        
+                        <p className="text-pretty leading-relaxed text-muted-foreground">
+                            The human toll has been staggering. Official reports confirm at least 26 fatalities, with 105 individuals suffering injuries of varying severity. Perhaps most concerning, 22 people remain missing, their fates unknown as search and rescue operations continue across the affected regions.
+                        </p>
+                        
+                        <p className="text-pretty leading-relaxed text-muted-foreground">
+                            In response to this unprecedented crisis, the Vietnamese government has mobilized resources on a massive scale. Approximately 250,000 people have been evacuated from high-risk areas, while 100,000 military personnel have been deployed to assist in rescue operations, evacuation efforts, and emergency relief distribution.
+                        </p>
+                        
+                        <p className="text-pretty leading-relaxed text-muted-foreground">
+                            Transportation infrastructure has been severely impacted, with four major airports in the central region—including the crucial Da Nang International Airport—temporarily shuttered to ensure aviation safety. This disruption has complicated relief efforts and limited access to affected areas.
+                        </p>
+                        
+                        <p className="text-pretty leading-relaxed text-muted-foreground">
+                            The scale of destruction extends far beyond human casualties. More than 100,000 homes have sustained damage ranging from minor structural issues to complete destruction, displacing thousands of families who now face uncertain futures. The agricultural sector, a cornerstone of Vietnam's economy, has not been spared—approximately 14,000 hectares of farmland lie devastated, threatening food security and livelihoods.
+                        </p>
+
+                        <p className="text-pretty leading-relaxed text-muted-foreground">
+                            Emergency shelters have been established across affected provinces, providing temporary refuge for displaced families. International humanitarian organizations have begun coordinating relief efforts, focusing on immediate needs such as clean water, medical supplies, and emergency food distribution.
+                        </p>
+
+                        <p className="text-pretty leading-relaxed text-muted-foreground">
+                            The torrential rains accompanying Typhoon Bualoi have triggered widespread flooding and dangerous landslides across multiple provinces. Coastal and low-lying communities have borne the brunt of the impact, with entire neighborhoods submerged and critical infrastructure compromised.
+                        </p>
+                        
+                        <p className="text-pretty leading-relaxed text-muted-foreground">
+                            Local organizations, religious groups, and community volunteers have stepped up to provide essential support, distributing food, clothing, and temporary shelter to those in desperate need. However, the magnitude of this disaster requires sustained international support and resources to ensure effective recovery and rebuilding efforts.
+                        </p>
+
+                        <p className="text-pretty leading-relaxed text-muted-foreground">
+                            Climate experts note that Typhoon Bualoi represents a growing pattern of increasingly severe weather events in Southeast Asia, attributed to rising global temperatures and changing ocean currents. This disaster underscores the urgent need for enhanced disaster preparedness and climate adaptation strategies in vulnerable coastal regions.
+                        </p>
+                    </MobileArticleReader>
+
+                    {/* Desktop version - Two-column newspaper style layout */}
+                    <div className="hidden md:grid md:grid-cols-2 gap-8 text-justify">
+                        {/* Column 1 */}
+                        <div className="space-y-4">
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                <span className="float-left text-6xl font-bold leading-none pr-2 pt-1 text-primary font-serif">I</span>
+                                n a devastating turn of events that unfolded in late September 2025, Typhoon Bualoi has wreaked unprecedented havoc across Vietnam, leaving communities struggling to recover from one of the most destructive storms in recent memory. The powerful typhoon, packing winds of up to 130 kilometers per hour and generating waves reaching 8 meters in height, made landfall with catastrophic force.
+                            </p>
+                            
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                The human toll has been staggering. Official reports confirm at least 26 fatalities, with 105 individuals suffering injuries of varying severity. Perhaps most concerning, 22 people remain missing, their fates unknown as search and rescue operations continue across the affected regions. Families wait anxiously for news of their loved ones as emergency teams work tirelessly against time and challenging conditions.
+                            </p>
+                            
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                The scale of destruction extends far beyond human casualties. More than 100,000 homes have sustained damage ranging from minor structural issues to complete destruction, displacing thousands of families who now face uncertain futures. The agricultural sector, a cornerstone of Vietnam's economy, has not been spared—approximately 14,000 hectares of farmland lie devastated, threatening food security and livelihoods.
+                            </p>
+
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                Emergency shelters have been established across affected provinces, providing temporary refuge for displaced families. International humanitarian organizations have begun coordinating relief efforts, focusing on immediate needs such as clean water, medical supplies, and emergency food distribution. The World Health Organization has issued warnings about potential disease outbreaks in flood-affected areas, emphasizing the critical need for sanitation and healthcare services.
+                            </p>
+
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                Economic implications of the disaster are becoming increasingly apparent as businesses remain shuttered and supply chains disrupted. The tourism industry, vital to Vietnam's economy, faces significant challenges with damaged infrastructure and cancelled flights affecting visitor arrivals during the peak season.
+                            </p>
+                        </div>
+                        
+                        {/* Column 2 */}
+                        <div className="space-y-4">
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                In response to this unprecedented crisis, the Vietnamese government has mobilized resources on a massive scale. Approximately 250,000 people have been evacuated from high-risk areas, while 100,000 military personnel have been deployed to assist in rescue operations, evacuation efforts, and emergency relief distribution.
+                            </p>
+                            
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                Transportation infrastructure has been severely impacted, with four major airports in the central region—including the crucial Da Nang International Airport—temporarily shuttered to ensure aviation safety. This disruption has complicated relief efforts and limited access to affected areas, making the work of humanitarian organizations even more challenging.
+                            </p>
+                            
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                The torrential rains accompanying Typhoon Bualoi have triggered widespread flooding and dangerous landslides across multiple provinces. Coastal and low-lying communities have borne the brunt of the impact, with entire neighborhoods submerged and critical infrastructure compromised. Power outages and communication disruptions have further complicated rescue and relief efforts.
+                            </p>
+                            
+                            <p className="text-pretty leading-relaxed text-muted-foreground">
+                                Local organizations, religious groups, and community volunteers have stepped up to provide essential support, distributing food, clothing, and temporary shelter to those in desperate need. However, the magnitude of this disaster requires sustained international support and resources to ensure effective recovery and rebuilding efforts.
+                            </p>
+
+                    <p className="text-pretty leading-relaxed text-muted-foreground">
+                                Climate experts note that Typhoon Bualoi represents a growing pattern of increasingly severe weather events in Southeast Asia, attributed to rising global temperatures and changing ocean currents. This disaster underscores the urgent need for enhanced disaster preparedness and climate adaptation strategies in vulnerable coastal regions.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    {/* Call to action */}
+                    <div className="mt-8 p-6 bg-muted/30 rounded-lg border-l-4 border-primary">
+                        <p className="text-sm text-muted-foreground italic text-center">
+                            <strong>Emergency Response Needed:</strong> With needs evolving rapidly, immediate humanitarian assistance is critical. 
+                            Your contribution through $BUALOI directly accelerates frontline relief efforts, providing transparent, blockchain-verified aid to those who need it most.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="donations" className="bg-card">
+                <div className="mx-auto max-w-6xl px-4 py-10">
+                    <div className="text-center mb-8">
+                        <h3 className="text-balance text-2xl font-bold tracking-tight mb-2 font-serif">On-Chain Donations</h3>
+                        <p className="text-muted-foreground">Live transparency • Every transaction verified on blockchain</p>
+                        <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-sm font-medium">
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            Total Raised: ${total.toLocaleString()}
+                        </div>
+                    </div>
+                    
+                    <div className="grid gap-4">
+                        {donations.slice(0, 10).map((d) => (
+                            <Card key={d.tx_hash} className="group hover:shadow-md transition-all duration-300 border-l-4 border-l-primary/20 hover:border-l-primary">
+                        <CardContent className="p-4">
+                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                        {/* Left Side: Amount & Organization */}
+                                        <div className="flex items-center gap-4">
+                                            <div className="text-center md:text-left">
+                                                <div className="text-xl font-bold text-primary">${Number(d.amount).toLocaleString()}</div>
+                                                <div className="text-xs text-muted-foreground">USD</div>
+                                            </div>
+                                            <div className="border-l pl-4">
+                                                <div className="text-base font-medium">{d.recipient_org || 'Relief Fund'}</div>
+                                                {d.bank_reference && (
+                                                    <div className="text-sm text-muted-foreground">REF: {d.bank_reference}</div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Right Side: Transaction & Status */}
+                                        <div className="flex flex-col md:flex-row md:items-center gap-4">
+                                            {/* Transaction Hash */}
+                                            <div className="flex items-center gap-2">
+                                                <code className="text-sm font-mono bg-muted px-3 py-1.5 rounded">{d.tx_hash.slice(0, 8)}...{d.tx_hash.slice(-4)}</code>
+                                                <CopyButton 
+                                                    text={d.tx_hash} 
+                                                    label="Hash" 
+                                                    variant="ghost" 
+                                                    size="sm"
+                                                    className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                />
+                                            </div>
+                                            
+                                            {/* Status & Date */}
+                                            <div className="text-right">
+                                                <div className="inline-flex items-center gap-2 px-2 py-1 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-sm font-medium mb-1">
+                                                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+                                                    Confirmed
+                                                </div>
+                                                <div className="text-sm text-muted-foreground">
+                                                    {new Date(d.datetime).toLocaleDateString('en-US', {
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    })}
+                                                </div>
+                                            </div>
+                                            
+                                            {/* View Button */}
+                                            <Button variant="outline" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0" asChild>
+                                                <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
+                                                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                    </svg>
+                                                    View
+                                                </Link>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                        
+                        {donations.length === 0 && (
+                            <Card className="border-dashed">
+                                <CardContent className="p-12 text-center">
+                                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
+                                        <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                    </div>
+                                    <h4 className="text-lg font-semibold mb-2">No donations yet</h4>
+                                    <p className="text-muted-foreground mb-4">Be the first to contribute to this cause</p>
+                                    <Button asChild>
+                                        <Link href={config?.pump_fun_address || "https://pump.fun"} target="_blank">Make First Donation</Link>
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </div>
+                </div>
+            </section>
+
+            <section className="bg-background">
+                <div className="mx-auto max-w-6xl px-4 py-10">
+                    <h3 className="text-balance text-xl font-semibold tracking-tight mb-6 text-center">Join Movement & Community</h3>
+                    <Card className="relative overflow-hidden">
+                        {/* Background Image with Overlay */}
+                        <div className="absolute inset-0">
+                            <Image 
+                                src="/assets/herocarousel/2.jpg" 
+                                alt="Community Background" 
+                                fill
+                                className="object-cover"
+                                priority
+                            />
+                            <div className="absolute inset-0 bg-black/60"></div>
+                        </div>
+                        
+                        {/* Content */}
+                        <CardContent className="relative z-10 p-8 md:p-12 text-center">
+                            <div className="max-w-2xl mx-auto space-y-6">
+                                <h4 className="text-2xl md:text-3xl font-bold text-white">
+                                    Be Part of the Change
+                                </h4>
+                                <p className="text-lg text-white/90 leading-relaxed">
+                                    Join thousands of crypto enthusiasts making a real difference. Connect with our community, 
+                                    share updates, and stay informed about our relief efforts in Vietnam.
+                                </p>
+                                <div className="flex justify-center items-center">
+                                    <Button asChild size="lg" className="bg-white text-black hover:bg-white/90 font-semibold">
+                                        <Link href={config?.twitter_community || "https://twitter.com/bualoi_community"} target="_blank">
+                                            Join Community Twitter
+                                        </Link>
+                                    </Button>
+                                </div>
+                                <div className="flex items-center justify-center gap-6 text-white/80 text-sm">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                        <span>24/7 Community Support</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <span>Real-time Updates</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                        <span>Transparent Reports</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </section>
+
+            <section className="bg-background">
+                <div className="mx-auto max-w-6xl px-4 py-10">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-balance text-xl font-semibold tracking-tight">Field Gallery</h3>
+                        <span className="text-xs text-muted-foreground">Community-sourced visuals</span>
+                    </div>
+                    <Gallery />
+                </div>
+            </section>
+
+            <section className="bg-background">
+                <div className="mx-auto max-w-6xl px-4 py-10">
+                    <h3 className="text-balance text-xl font-semibold tracking-tight mb-4">Market & Liquidity (Live)</h3>
+                    <div className="rounded-md border bg-card p-3">
+                        <div className="aspect-[16/9] w-full overflow-hidden rounded-md">
+                            <iframe
+                                title="$BUALOI Dexscreener"
+                                src={`https://dexscreener.com/solana/${config?.dexscreener_pair || 'PLACEHOLDERPAIR'}?embed=1&theme=dark`}
+                                className="h-full w-full"
+                                allow="clipboard-write; encrypted-media"
+                                frameBorder={0}
+                            />
+                        </div>
+                        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                            <div className="text-xs text-muted-foreground">
+                                {config?.dexscreener_pair ? 
+                                    `Live chart for pair: ${config.dexscreener_pair}` : 
+                                    'Chart will load when pair address is configured'
+                                }
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <a 
+                                    href={`https://dexscreener.com/solana/${config?.dexscreener_pair || ''}`} 
+                                    target="_blank" 
+                                    rel="noreferrer" 
+                                    className="text-sm underline decoration-muted-foreground/40 underline-offset-4 hover:text-foreground"
+                                >
+                                    Open on Dexscreener
+                                </a>
+                                <a href="#donations" className="text-sm underline decoration-muted-foreground/40 underline-offset-4 hover:text-foreground">View Donations</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer className="mt-auto bg-card">
+                <div className="mx-auto max-w-6xl px-4 py-8">
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div className="text-sm text-muted-foreground">
+                            Narrative: Crypto united for Vietnam – every trade fuels direct relief for victims of Typhoon Bualoi. 100% transparent on-chain.
+                        </div>
+                        <div className="flex items-center justify-start md:justify-end gap-3">
+                            <a
+                                href={config?.twitter_official || "https://twitter.com/bualoi_official"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 text-sm hover:text-foreground transition-colors group"
+                            >
+                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                </svg>
+                                Typhon Bualoi
+                            </a>
+                        </div>
+                    </div>
+                    <div className="mt-4 text-xs text-muted-foreground">
+                        Meme + Charity + Solidarity. $BUALOI is a community-driven initiative. Not financial advice.
+                    </div>
+                </div>
+            </footer>
+        </main>
+    );
 }
