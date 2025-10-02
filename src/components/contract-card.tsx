@@ -86,7 +86,14 @@ export default function ContractCard() {
           <img 
             src="/assets/logovrl.svg" 
             alt="" 
-            className="w-full h-full object-contain transform translate-x-16 -translate-y-16"
+            className={`w-full h-full object-contain transform translate-x-16 -translate-y-16 ${
+              isDark ? 'opacity-5 group-hover:opacity-10' : 'opacity-10 group-hover:opacity-15'
+            }`}
+            style={{
+              filter: isDark 
+                ? 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.9) contrast(1.2)'
+                : 'brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.8) contrast(0.8)'
+            }}
           />
         </div>
       </div>
@@ -111,7 +118,7 @@ export default function ContractCard() {
         </div>
 
         {/* Contract Address Section - moved up */}
-        <div className="flex flex-col space-y-2 mb-8">
+        <div className="flex flex-col space-y-2 mb-12">
           <div className={`text-xs font-bold tracking-wider text-right ${
             isDark ? 'text-white/50' : 'text-black/50'
           }`}>
