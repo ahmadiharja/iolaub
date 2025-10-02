@@ -32,7 +32,7 @@ export default function ContractCard() {
 
   if (!mounted) {
     return (
-      <Card className="relative overflow-hidden p-8 min-h-[400px]">
+      <Card className="relative overflow-hidden p-6 h-fit">
         <div className="animate-pulse">
           <div className="h-12 bg-muted rounded w-20 mb-8"></div>
           <div className="h-6 bg-muted rounded w-full mb-2"></div>
@@ -45,7 +45,7 @@ export default function ContractCard() {
   const contractAddress = config?.contract_address || '7xKXtg2CW3DnBcjPiVNqHkETGSsyBESdLkB4gHqRWpD1';
 
   return (
-    <Card className="relative overflow-hidden p-0 min-h-[400px] group hover:scale-[1.01] transition-all duration-500 shadow-lg">
+    <Card className="relative overflow-hidden p-0 h-fit group hover:scale-[1.01] transition-all duration-500 shadow-lg">
       {/* Modern Card Background */}
       <div className="absolute inset-0">
         {/* Premium gradient background */}
@@ -80,13 +80,22 @@ export default function ContractCard() {
         
         {/* Subtle shine effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/3 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+        
+        {/* Background logovrl.svg in top-right corner */}
+        <div className="absolute top-0 right-0 w-96 h-96 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+          <img 
+            src="/assets/logovrl.svg" 
+            alt="" 
+            className="w-full h-full object-contain transform translate-x-16 -translate-y-16"
+          />
+        </div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 p-8 h-full flex flex-col min-h-[400px]">
+      <div className="relative z-10 p-6 h-full flex flex-col">
         {/* Top section with logo and hashtag */}
         <div className="flex justify-between items-start mb-6">
-          <div className="w-48 h-48 relative -mt-12 -ml-4">
+          <div className="w-48 h-48 relative -mt-16 ml-2">
             <Image
               src={isDark ? '/assets/png/bualoi_dark.png' : '/assets/png/bualoi_light.png'}
               alt="BUALOI Logo"
@@ -102,7 +111,7 @@ export default function ContractCard() {
         </div>
 
         {/* Contract Address Section - moved up */}
-        <div className="flex-1 flex flex-col justify-center space-y-2 mb-12">
+        <div className="flex flex-col space-y-2 mb-8">
           <div className={`text-xs font-bold tracking-wider text-right ${
             isDark ? 'text-white/50' : 'text-black/50'
           }`}>
@@ -136,7 +145,7 @@ export default function ContractCard() {
         </div>
         
         {/* Powered by Solana - bigger logo */}
-        <div className="absolute bottom-6 right-8 flex items-center gap-2 opacity-70">
+        <div className="absolute bottom-4 right-6 flex items-center gap-2 opacity-70">
           <span className={`text-sm font-medium ${
             isDark ? 'text-white/50' : 'text-black/50'
           }`}>
