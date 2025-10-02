@@ -72,7 +72,7 @@ export function DonationCard({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
           {/* Left: Amount */}
           <div className="text-center lg:text-left">
-            <div className="relative">
+            <div className="relative ml-8 lg:ml-12">
               {/* Logo watermark */}
               <div className="absolute -top-4 -right-4 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
                 <img 
