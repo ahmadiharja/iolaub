@@ -155,3 +155,13 @@
 h1, h2, h3, h4, .font-serif {
   font-family: var(--font-serif), ui-serif, Georgia, "Times New Roman", Times, serif;
 }
+
+/* Logo watermark styling */
+.logo-watermark {
+  filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.8) contrast(0.8);
+  transition: filter 0.3s ease;
+}
+
+.dark .logo-watermark {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.9) contrast(1.2);
+}

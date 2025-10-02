@@ -74,11 +74,11 @@ export function DonationCard({
           <div className="text-center lg:text-left">
             <div className="relative ml-8 lg:ml-12">
               {/* Logo watermark */}
-              <div className="absolute -top-4 -right-4 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
+              <div className="absolute -top-8 -left-8 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
                 <img 
                   src="/assets/logovrl.svg" 
                   alt="" 
-                  className="w-16 h-16 object-contain"
+                  className="w-64 h-64 object-contain logo-watermark"
                 />
               </div>
               
