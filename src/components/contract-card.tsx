@@ -81,19 +81,12 @@ export default function ContractCard() {
         {/* Subtle shine effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/3 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
         
-        {/* Background logovrl.svg in top-right corner */}
-        <div className="absolute top-0 right-0 w-96 h-96 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+        {/* Background logovrl.svg in bottom-left corner */}
+        <div className="absolute bottom-0 left-0 w-96 h-96">
           <img 
             src="/assets/logovrl.svg" 
             alt="" 
-            className={`w-full h-full object-contain transform translate-x-16 -translate-y-16 ${
-              isDark ? 'opacity-5 group-hover:opacity-10' : 'opacity-10 group-hover:opacity-15'
-            }`}
-            style={{
-              filter: isDark 
-                ? 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.9) contrast(1.2)'
-                : 'brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.8) contrast(0.8)'
-            }}
+            className="w-full h-full object-contain transform -translate-x-16 translate-y-16 logo-watermark"
           />
         </div>
       </div>
@@ -118,7 +111,7 @@ export default function ContractCard() {
         </div>
 
         {/* Contract Address Section - moved up */}
-        <div className="flex flex-col space-y-2 mb-12">
+        <div className="flex flex-col space-y-2 mb-16">
           <div className={`text-xs font-bold tracking-wider text-right ${
             isDark ? 'text-white/50' : 'text-black/50'
           }`}>
@@ -129,10 +122,13 @@ export default function ContractCard() {
           <div className="relative group/address cursor-pointer" onClick={() => {
             navigator.clipboard.writeText(contractAddress);
           }}>
-            <div className={`font-semibold text-right text-lg leading-relaxed break-all transition-all duration-300 ${
+            <div className={`font-semibold text-right text-lg leading-relaxed break-all transition-all duration-300 contract-address ${
               isDark ? 'text-white' : 'text-black'
             } group-hover/address:blur-sm`}>
-              {contractAddress}
+              {contractAddress.length > 20 
+                ? `${contractAddress.slice(0, 10)}*****${contractAddress.slice(-10)}`
+                : contractAddress
+              }
             </div>
             
             {/* Blurry overlay with copy button */}

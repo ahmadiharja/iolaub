@@ -22,6 +22,7 @@ const merriweather = Merriweather({
   variable: "--font-serif",
 });
 
+
 export const metadata: Metadata = {
   title: "Bualoi Relief Fund",
   description: "Buy $BUALOI, Save Lives.",

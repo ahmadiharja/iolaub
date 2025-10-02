@@ -158,18 +158,27 @@ h1, h2, h3, h4, .font-serif {
 
 /* Logo watermark styling */
 .logo-watermark {
-  opacity: 0.1;
+  opacity: 0.5;
   transition: opacity 0.3s ease;
+  filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.8) contrast(0.8);
 }
 
 .logo-watermark:hover {
-  opacity: 0.2;
+  opacity: 0.6;
 }
 
 .dark .logo-watermark {
-  opacity: 0.15;
+  opacity: 0.5;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0.9) contrast(1.2);
 }
 
 .dark .logo-watermark:hover {
-  opacity: 0.25;
+  opacity: 0.6;
+}
+
+/* ATM-style numeric font for contract address */
+.contract-address {
+  font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'DejaVu Sans Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
 }
