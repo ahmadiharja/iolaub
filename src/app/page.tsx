@@ -276,85 +276,127 @@ export default async function Home() {
                         </div>
                     </div>
                     
-                    <div className="grid gap-4">
-                        {donations.slice(0, 10).map((d) => (
-                            <Card key={d.tx_hash} className="group hover:shadow-md transition-all duration-300 border-l-4 border-l-primary/20 hover:border-l-primary">
-                        <CardContent className="p-4">
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                        {/* Left Side: Amount & Organization */}
-                                        <div className="flex items-center gap-4">
-                                            <div className="text-center md:text-left">
-                                                <div className="text-xl font-bold text-primary">${Number(d.amount).toLocaleString()}</div>
-                                                <div className="text-xs text-muted-foreground">USD</div>
+                    {/* Modern Card Grid Layout */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                        {donations.slice(0, 9).map((d, index) => (
+                            <Card key={d.tx_hash} className="group relative overflow-hidden bg-gradient-to-br from-card to-card/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 border-0 hover:scale-[1.02] hover:-translate-y-1">
+                                {/* Gradient Border Effect */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                
+                                <CardContent className="relative p-4 sm:p-6 space-y-3 sm:space-y-4">
+                                    {/* Header: Amount & Status */}
+                                    <div className="flex items-start justify-between">
+                                        <div className="space-y-1">
+                                            <div className="text-xl sm:text-2xl font-bold text-primary">
+                                                ${Number(d.amount).toLocaleString()}
                                             </div>
-                                            <div className="border-l pl-4">
-                                                <div className="text-base font-medium">{d.recipient_org || 'Relief Fund'}</div>
-                                                {d.bank_reference && (
-                                                    <div className="text-sm text-muted-foreground">REF: {d.bank_reference}</div>
-                                                )}
+                                            <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                                                Donation #{index + 1}
                                             </div>
                                         </div>
                                         
-                                        {/* Right Side: Transaction & Status */}
-                                        <div className="flex flex-col md:flex-row md:items-center gap-4">
-                                            {/* Transaction Hash */}
-                                            <div className="flex items-center gap-2">
-                                                <code className="text-sm font-mono bg-muted px-3 py-1.5 rounded">{d.tx_hash.slice(0, 8)}...{d.tx_hash.slice(-4)}</code>
-                                                <CopyButton 
-                                                    text={d.tx_hash} 
-                                                    label="Hash" 
-                                                    variant="ghost" 
-                                                    size="sm"
-                                                    className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                                                />
-                                            </div>
-                                            
-                                            {/* Status & Date */}
-                                            <div className="text-right">
-                                                <div className="inline-flex items-center gap-2 px-2 py-1 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-sm font-medium mb-1">
-                                                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                                                    Confirmed
-                                                </div>
-                                                <div className="text-sm text-muted-foreground">
-                                                    {new Date(d.datetime).toLocaleDateString('en-US', {
-                                                        month: 'short',
-                                                        day: 'numeric',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit'
-                                                    })}
-                                                </div>
-                                            </div>
-                                            
-                                            {/* View Button */}
-                                            <Button variant="outline" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0" asChild>
-                                                <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
-                                                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                    </svg>
-                                                    View
-                                                </Link>
-                                            </Button>
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-xs sm:text-sm font-medium">
+                                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                            <span className="hidden sm:inline">Confirmed</span>
+                                            <span className="sm:hidden">✓</span>
                                         </div>
+                                    </div>
+                                    
+                                    {/* Organization Info */}
+                                    <div className="space-y-2">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                                                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div className="font-semibold text-foreground">
+                                                    {d.recipient_org || 'Relief Fund'}
+                                                </div>
+                                                {d.bank_reference && (
+                                                    <div className="text-xs text-muted-foreground">
+                                                        Ref: {d.bank_reference}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Transaction Hash */}
+                                    <div className="space-y-2">
+                                        <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                            Transaction Hash
+                                        </div>
+                                        <div className="flex items-center gap-2 p-2.5 sm:p-3 bg-muted/50 rounded-lg">
+                                            <code className="text-xs sm:text-sm font-mono text-foreground flex-1 truncate">
+                                                {d.tx_hash.slice(0, 8)}...{d.tx_hash.slice(-6)}
+                                            </code>
+                                            <CopyButton 
+                                                text={d.tx_hash} 
+                                                label="Copy Hash" 
+                                                variant="ghost" 
+                                                size="sm"
+                                                className="h-7 w-7 sm:h-8 sm:w-8 p-0 hover:bg-primary/10"
+                                            />
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Footer: Date & Action */}
+                                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
+                                        <div className="text-xs sm:text-sm text-muted-foreground">
+                                            {new Date(d.datetime).toLocaleDateString('en-US', {
+                                                month: 'short',
+                                                day: 'numeric',
+                                                year: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
+                                        </div>
+                                        
+                                        <Button 
+                                            variant="outline" 
+                                            size="sm" 
+                                            className="h-7 sm:h-8 px-2 sm:px-3 text-xs font-medium hover:bg-primary hover:text-primary-foreground transition-colors" 
+                                            asChild
+                                        >
+                                            <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
+                                                <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                </svg>
+                                                <span className="hidden sm:inline">View</span>
+                                                <span className="sm:hidden">→</span>
+                                            </Link>
+                                        </Button>
                                     </div>
                                 </CardContent>
                             </Card>
                         ))}
                         
                         {donations.length === 0 && (
-                            <Card className="border-dashed">
-                                <CardContent className="p-12 text-center">
-                                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
-                                        <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                    </div>
-                                    <h4 className="text-lg font-semibold mb-2">No donations yet</h4>
-                                    <p className="text-muted-foreground mb-4">Be the first to contribute to this cause</p>
-                                    <Button asChild>
-                                        <Link href={config?.pump_fun_address || "https://pump.fun"} target="_blank">Make First Donation</Link>
-                                    </Button>
-                                </CardContent>
-                            </Card>
+                            <div className="col-span-full">
+                                <Card className="border-dashed border-2 bg-muted/20">
+                                    <CardContent className="p-12 text-center">
+                                        <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                                            <svg className="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="text-xl font-bold mb-3 text-foreground">No donations yet</h3>
+                                        <p className="text-muted-foreground max-w-md mx-auto leading-relaxed mb-6">
+                                            Be the first to contribute to the relief effort and help make a difference in the lives of those affected by Typhoon Bualoi.
+                                        </p>
+                                        <Button asChild className="bg-primary hover:bg-primary/90">
+                                            <Link href={config?.pump_fun_address || "https://pump.fun"} target="_blank">
+                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                </svg>
+                                                Make First Donation
+                                            </Link>
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            </div>
                         )}
                     </div>
                 </div>
