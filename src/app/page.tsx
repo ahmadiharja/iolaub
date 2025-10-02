@@ -276,113 +276,113 @@ export default async function Home() {
                         </div>
                     </div>
                     
-                    {/* Professional Donation Cards */}
-                    <div className="space-y-3">
+                    {/* Redesigned Donation Cards - Image Style */}
+                    <div className="space-y-4">
                         {donations.slice(0, 10).map((d, index) => (
                             <div key={d.tx_hash} className="group">
-                                <Card className="border border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 bg-card/50 backdrop-blur-sm">
+                                <Card className="overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 bg-card border-0">
                                     <CardContent className="p-0">
                                         {/* Desktop Layout */}
-                                        <div className="hidden lg:flex items-center justify-between p-6">
-                                            {/* Left: Amount & Organization */}
-                                            <div className="flex items-center space-x-6">
-                                                {/* Amount Section */}
-                                                <div className="flex flex-col items-center">
-                                                    <div className="text-3xl font-bold text-primary mb-1">
+                                        <div className="hidden md:flex h-32">
+                                            {/* Left Section - Red Background */}
+                                            <div className="relative w-1/3 bg-gradient-to-br from-red-500 to-red-600 flex flex-col items-center justify-center">
+                                                {/* Rank Badge */}
+                                                <div className="absolute top-3 left-3 bg-red-700 px-3 py-1 rounded-lg transform -skew-x-12">
+                                                    <span className="text-white font-bold text-sm">#{index + 1}</span>
+                                                </div>
+                                                
+                                                {/* Amount */}
+                                                <div className="relative z-10 text-center">
+                                                    <div className="text-4xl font-bold text-white mb-1">
                                                         ${Number(d.amount).toLocaleString()}
                                                     </div>
-                                                    <div className="text-xs text-muted-foreground font-medium">
-                                                        #{index + 1}
-                                                    </div>
                                                 </div>
                                                 
-                                                {/* Divider */}
-                                                <div className="w-px h-12 bg-border/50"></div>
-                                                
-                                                {/* Organization Section */}
-                                                <div className="flex items-center space-x-3">
-                                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                                                        <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <div className="font-semibold text-foreground text-base">
-                                                            {d.recipient_org || 'Relief Fund'}
-                                                        </div>
-                                                        {d.bank_reference && (
-                                                            <div className="text-sm text-muted-foreground">
-                                                                Ref: {d.bank_reference}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            {/* Center: Transaction Hash */}
-                                            <div className="flex-1 max-w-sm mx-8">
-                                                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
-                                                    Transaction Hash
-                                                </div>
-                                                <div className="flex items-center space-x-2 p-3 bg-muted/30 rounded-lg border border-border/30">
-                                                    <code className="text-sm font-mono text-foreground flex-1 truncate">
-                                                        {d.tx_hash.slice(0, 16)}...{d.tx_hash.slice(-12)}
-                                                    </code>
-                                                    <CopyButton 
-                                                        text={d.tx_hash} 
-                                                        label="Copy Hash" 
-                                                        variant="ghost" 
-                                                        size="sm"
-                                                        className="h-8 w-8 p-0 hover:bg-primary/10 rounded-md"
+                                                {/* Logo Gradient Background */}
+                                                <div className="absolute inset-0 opacity-20">
+                                                    <img 
+                                                        src="/assets/logovrl.svg" 
+                                                        alt="Logo" 
+                                                        className="w-full h-full object-cover"
                                                     />
                                                 </div>
                                             </div>
                                             
-                                            {/* Right: Status, Date & Actions */}
-                                            <div className="flex flex-col items-end space-y-3">
-                                                {/* Status Badge */}
-                                                <div className="flex items-center space-x-2 px-3 py-1.5 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-sm font-medium border border-green-500/20">
-                                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                                    <span>Confirmed</span>
+                                            {/* Right Section - Dark Grey Background */}
+                                            <div className="flex-1 bg-gray-800 p-6 flex flex-col justify-between">
+                                                {/* Top Row: Organization & Status */}
+                                                <div className="flex items-start justify-between">
+                                                    {/* Organization Info */}
+                                                    <div className="flex items-center space-x-3">
+                                                        <div className="w-10 h-10 rounded-lg bg-gray-700 flex items-center justify-center">
+                                                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                            </svg>
+                                                        </div>
+                                                        <div>
+                                                            <div className="font-semibold text-white text-lg">
+                                                                {d.recipient_org || 'Relief Fund'}
+                                                            </div>
+                                                            {d.bank_reference && (
+                                                                <div className="text-gray-400 text-sm">
+                                                                    Ref: {d.bank_reference}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    {/* Status & Date */}
+                                                    <div className="text-right">
+                                                        <div className="flex items-center space-x-2 px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm font-medium mb-2">
+                                                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                                            <span>Confirmed</span>
+                                                        </div>
+                                                        <div className="text-gray-400 text-sm">
+                                                            {new Date(d.datetime).toLocaleDateString('en-US', {
+                                                                month: 'short',
+                                                                day: 'numeric',
+                                                                year: 'numeric',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit'
+                                                            })}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 
-                                                {/* Date */}
-                                                <div className="text-sm text-muted-foreground text-right">
-                                                    {new Date(d.datetime).toLocaleDateString('en-US', {
-                                                        month: 'short',
-                                                        day: 'numeric',
-                                                        year: 'numeric',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit'
-                                                    })}
+                                                {/* Bottom Row: Transaction Hash */}
+                                                <div className="mt-4">
+                                                    <div className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                                                        Transaction Hash
+                                                    </div>
+                                                    <div className="flex items-center space-x-3 p-3 bg-gray-700 rounded-lg">
+                                                        <code className="text-sm font-mono text-white flex-1 truncate">
+                                                            {d.tx_hash.slice(0, 20)}...{d.tx_hash.slice(-16)}
+                                                        </code>
+                                                        <div className="w-px h-6 bg-gray-600"></div>
+                                                        <Button 
+                                                            variant="ghost" 
+                                                            size="sm" 
+                                                            className="h-8 px-3 text-green-400 hover:bg-green-500/20 hover:text-green-300 transition-colors font-medium" 
+                                                            asChild
+                                                        >
+                                                            <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
+                                                                Solscan
+                                                            </Link>
+                                                        </Button>
+                                                    </div>
                                                 </div>
-                                                
-                                                {/* Action Button */}
-                                                <Button 
-                                                    variant="outline" 
-                                                    size="sm" 
-                                                    className="h-9 px-4 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors border-border/50" 
-                                                    asChild
-                                                >
-                                                    <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
-                                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                        </svg>
-                                                        View Transaction
-                                                    </Link>
-                                                </Button>
                                             </div>
                                         </div>
                                         
                                         {/* Mobile Layout */}
-                                        <div className="lg:hidden p-4 space-y-4">
+                                        <div className="md:hidden p-4 space-y-4">
                                             {/* Header: Amount & Status */}
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center space-x-3">
                                                     <div className="text-2xl font-bold text-primary">
                                                         ${Number(d.amount).toLocaleString()}
                                                     </div>
-                                                    <div className="text-xs text-muted-foreground font-medium">
+                                                    <div className="bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">
                                                         #{index + 1}
                                                     </div>
                                                 </div>
@@ -420,40 +420,30 @@ export default async function Home() {
                                                     <code className="text-xs font-mono text-foreground flex-1 truncate">
                                                         {d.tx_hash.slice(0, 12)}...{d.tx_hash.slice(-8)}
                                                     </code>
-                                                    <CopyButton 
-                                                        text={d.tx_hash} 
-                                                        label="Copy Hash" 
+                                                    <Button 
                                                         variant="ghost" 
-                                                        size="sm"
-                                                        className="h-7 w-7 p-0 hover:bg-primary/10 rounded-md"
-                                                    />
+                                                        size="sm" 
+                                                        className="h-7 w-7 p-0 hover:bg-primary/10 rounded-md" 
+                                                        asChild
+                                                    >
+                                                        <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
+                                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                            </svg>
+                                                        </Link>
+                                                    </Button>
                                                 </div>
                                             </div>
                                             
-                                            {/* Footer: Date & Action */}
-                                            <div className="flex items-center justify-between pt-2 border-t border-border/30">
-                                                <div className="text-xs text-muted-foreground">
-                                                    {new Date(d.datetime).toLocaleDateString('en-US', {
-                                                        month: 'short',
-                                                        day: 'numeric',
-                                                        year: 'numeric',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit'
-                                                    })}
-                                                </div>
-                                                <Button 
-                                                    variant="outline" 
-                                                    size="sm" 
-                                                    className="h-8 px-3 text-xs font-medium hover:bg-primary hover:text-primary-foreground transition-colors" 
-                                                    asChild
-                                                >
-                                                    <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
-                                                        <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                        </svg>
-                                                        View
-                                                    </Link>
-                                                </Button>
+                                            {/* Footer: Date */}
+                                            <div className="text-xs text-muted-foreground">
+                                                {new Date(d.datetime).toLocaleDateString('en-US', {
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
                                             </div>
                                         </div>
                                     </CardContent>
