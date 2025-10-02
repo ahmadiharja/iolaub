@@ -276,127 +276,213 @@ export default async function Home() {
                         </div>
                     </div>
                     
-                    {/* Modern Card Grid Layout */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        {donations.slice(0, 9).map((d, index) => (
-                            <Card key={d.tx_hash} className="group relative overflow-hidden bg-gradient-to-br from-card to-card/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 border-0 hover:scale-[1.02] hover:-translate-y-1">
-                                {/* Gradient Border Effect */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                
-                                <CardContent className="relative p-4 sm:p-6 space-y-3 sm:space-y-4">
-                                    {/* Header: Amount & Status */}
-                                    <div className="flex items-start justify-between">
-                                        <div className="space-y-1">
-                                            <div className="text-xl sm:text-2xl font-bold text-primary">
-                                                ${Number(d.amount).toLocaleString()}
-                                            </div>
-                                            <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
-                                                Donation #{index + 1}
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-xs sm:text-sm font-medium">
-                                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                            <span className="hidden sm:inline">Confirmed</span>
-                                            <span className="sm:hidden">✓</span>
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Organization Info */}
-                                    <div className="space-y-2">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                                                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <div className="font-semibold text-foreground">
-                                                    {d.recipient_org || 'Relief Fund'}
-                                                </div>
-                                                {d.bank_reference && (
-                                                    <div className="text-xs text-muted-foreground">
-                                                        Ref: {d.bank_reference}
+                    {/* Professional Donation Cards */}
+                    <div className="space-y-3">
+                        {donations.slice(0, 10).map((d, index) => (
+                            <div key={d.tx_hash} className="group">
+                                <Card className="border border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 bg-card/50 backdrop-blur-sm">
+                                    <CardContent className="p-0">
+                                        {/* Desktop Layout */}
+                                        <div className="hidden lg:flex items-center justify-between p-6">
+                                            {/* Left: Amount & Organization */}
+                                            <div className="flex items-center space-x-6">
+                                                {/* Amount Section */}
+                                                <div className="flex flex-col items-center">
+                                                    <div className="text-3xl font-bold text-primary mb-1">
+                                                        ${Number(d.amount).toLocaleString()}
                                                     </div>
-                                                )}
+                                                    <div className="text-xs text-muted-foreground font-medium">
+                                                        #{index + 1}
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* Divider */}
+                                                <div className="w-px h-12 bg-border/50"></div>
+                                                
+                                                {/* Organization Section */}
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                                                        <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-semibold text-foreground text-base">
+                                                            {d.recipient_org || 'Relief Fund'}
+                                                        </div>
+                                                        {d.bank_reference && (
+                                                            <div className="text-sm text-muted-foreground">
+                                                                Ref: {d.bank_reference}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Center: Transaction Hash */}
+                                            <div className="flex-1 max-w-sm mx-8">
+                                                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
+                                                    Transaction Hash
+                                                </div>
+                                                <div className="flex items-center space-x-2 p-3 bg-muted/30 rounded-lg border border-border/30">
+                                                    <code className="text-sm font-mono text-foreground flex-1 truncate">
+                                                        {d.tx_hash.slice(0, 16)}...{d.tx_hash.slice(-12)}
+                                                    </code>
+                                                    <CopyButton 
+                                                        text={d.tx_hash} 
+                                                        label="Copy Hash" 
+                                                        variant="ghost" 
+                                                        size="sm"
+                                                        className="h-8 w-8 p-0 hover:bg-primary/10 rounded-md"
+                                                    />
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Right: Status, Date & Actions */}
+                                            <div className="flex flex-col items-end space-y-3">
+                                                {/* Status Badge */}
+                                                <div className="flex items-center space-x-2 px-3 py-1.5 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-sm font-medium border border-green-500/20">
+                                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                                    <span>Confirmed</span>
+                                                </div>
+                                                
+                                                {/* Date */}
+                                                <div className="text-sm text-muted-foreground text-right">
+                                                    {new Date(d.datetime).toLocaleDateString('en-US', {
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                        year: 'numeric',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    })}
+                                                </div>
+                                                
+                                                {/* Action Button */}
+                                                <Button 
+                                                    variant="outline" 
+                                                    size="sm" 
+                                                    className="h-9 px-4 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors border-border/50" 
+                                                    asChild
+                                                >
+                                                    <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
+                                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                        </svg>
+                                                        View Transaction
+                                                    </Link>
+                                                </Button>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                    {/* Transaction Hash */}
-                                    <div className="space-y-2">
-                                        <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                                            Transaction Hash
-                                        </div>
-                                        <div className="flex items-center gap-2 p-2.5 sm:p-3 bg-muted/50 rounded-lg">
-                                            <code className="text-xs sm:text-sm font-mono text-foreground flex-1 truncate">
-                                                {d.tx_hash.slice(0, 8)}...{d.tx_hash.slice(-6)}
-                                            </code>
-                                            <CopyButton 
-                                                text={d.tx_hash} 
-                                                label="Copy Hash" 
-                                                variant="ghost" 
-                                                size="sm"
-                                                className="h-7 w-7 sm:h-8 sm:w-8 p-0 hover:bg-primary/10"
-                                            />
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Footer: Date & Action */}
-                                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                                        <div className="text-xs sm:text-sm text-muted-foreground">
-                                            {new Date(d.datetime).toLocaleDateString('en-US', {
-                                                month: 'short',
-                                                day: 'numeric',
-                                                year: 'numeric',
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            })}
-                                        </div>
                                         
-                                        <Button 
-                                            variant="outline" 
-                                            size="sm" 
-                                            className="h-7 sm:h-8 px-2 sm:px-3 text-xs font-medium hover:bg-primary hover:text-primary-foreground transition-colors" 
-                                            asChild
-                                        >
-                                            <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
-                                                <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                </svg>
-                                                <span className="hidden sm:inline">View</span>
-                                                <span className="sm:hidden">→</span>
-                                            </Link>
-                                        </Button>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                        
-                        {donations.length === 0 && (
-                            <div className="col-span-full">
-                                <Card className="border-dashed border-2 bg-muted/20">
-                                    <CardContent className="p-12 text-center">
-                                        <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                                            <svg className="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                            </svg>
+                                        {/* Mobile Layout */}
+                                        <div className="lg:hidden p-4 space-y-4">
+                                            {/* Header: Amount & Status */}
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="text-2xl font-bold text-primary">
+                                                        ${Number(d.amount).toLocaleString()}
+                                                    </div>
+                                                    <div className="text-xs text-muted-foreground font-medium">
+                                                        #{index + 1}
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center space-x-2 px-2 py-1 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-xs font-medium">
+                                                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                                                    <span>Confirmed</span>
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Organization */}
+                                            <div className="flex items-center space-x-3">
+                                                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                                                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <div className="font-semibold text-foreground text-sm">
+                                                        {d.recipient_org || 'Relief Fund'}
+                                                    </div>
+                                                    {d.bank_reference && (
+                                                        <div className="text-xs text-muted-foreground">
+                                                            Ref: {d.bank_reference}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Transaction Hash */}
+                                            <div>
+                                                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
+                                                    Transaction Hash
+                                                </div>
+                                                <div className="flex items-center space-x-2 p-2 bg-muted/30 rounded-lg border border-border/30">
+                                                    <code className="text-xs font-mono text-foreground flex-1 truncate">
+                                                        {d.tx_hash.slice(0, 12)}...{d.tx_hash.slice(-8)}
+                                                    </code>
+                                                    <CopyButton 
+                                                        text={d.tx_hash} 
+                                                        label="Copy Hash" 
+                                                        variant="ghost" 
+                                                        size="sm"
+                                                        className="h-7 w-7 p-0 hover:bg-primary/10 rounded-md"
+                                                    />
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Footer: Date & Action */}
+                                            <div className="flex items-center justify-between pt-2 border-t border-border/30">
+                                                <div className="text-xs text-muted-foreground">
+                                                    {new Date(d.datetime).toLocaleDateString('en-US', {
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                        year: 'numeric',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    })}
+                                                </div>
+                                                <Button 
+                                                    variant="outline" 
+                                                    size="sm" 
+                                                    className="h-8 px-3 text-xs font-medium hover:bg-primary hover:text-primary-foreground transition-colors" 
+                                                    asChild
+                                                >
+                                                    <Link href={`https://solscan.io/tx/${d.tx_hash}`} target="_blank">
+                                                        <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                        </svg>
+                                                        View
+                                                    </Link>
+                                                </Button>
+                                            </div>
                                         </div>
-                                        <h3 className="text-xl font-bold mb-3 text-foreground">No donations yet</h3>
-                                        <p className="text-muted-foreground max-w-md mx-auto leading-relaxed mb-6">
-                                            Be the first to contribute to the relief effort and help make a difference in the lives of those affected by Typhoon Bualoi.
-                                        </p>
-                                        <Button asChild className="bg-primary hover:bg-primary/90">
-                                            <Link href={config?.pump_fun_address || "https://pump.fun"} target="_blank">
-                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                                </svg>
-                                                Make First Donation
-                                            </Link>
-                                        </Button>
                                     </CardContent>
                                 </Card>
                             </div>
+                        ))}
+                        
+                        {donations.length === 0 && (
+                            <Card className="border-dashed border-2 border-border/50 bg-muted/20">
+                                <CardContent className="p-16 text-center">
+                                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                                        <svg className="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-2xl font-bold mb-4 text-foreground">No donations yet</h3>
+                                    <p className="text-muted-foreground max-w-lg mx-auto leading-relaxed mb-8 text-lg">
+                                        Be the first to contribute to the relief effort and help make a difference in the lives of those affected by Typhoon Bualoi.
+                                    </p>
+                                    <Button asChild className="bg-primary hover:bg-primary/90 h-12 px-8 text-base font-medium">
+                                        <Link href={config?.pump_fun_address || "https://pump.fun"} target="_blank">
+                                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                            </svg>
+                                            Make First Donation
+                                        </Link>
+                                    </Button>
+                                </CardContent>
+                            </Card>
                         )}
                     </div>
                 </div>
