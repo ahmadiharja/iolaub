@@ -65,21 +65,39 @@ async function getProjectConfig() {
 		});
 		
 		if (!response.ok) {
-			console.log('Config API response not OK:', response.status, response.statusText);
+			console.log('Config API response not OK, trying fallback:', response.status, response.statusText);
 			throw new Error(`Config API failed: ${response.status}`);
 		}
 		
 		const config = await response.json();
-		console.log('✅ Config loaded successfully');
+		console.log('✅ Config loaded successfully from database');
 		return config;
 	} catch (error) {
-		console.log('Config fetch error, using defaults:', error);
+		console.log('❌ Config fetch error, using fallback data:', error);
+		
+		// Try fallback data service
+		try {
+			const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
+			                (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3001');
+			const fallbackResponse = await fetch(`${baseUrl}/api/fallback-data?type=config`, {
+				next: { revalidate: 300 }
+			});
+			if (fallbackResponse.ok) {
+				const fallbackConfig = await fallbackResponse.json();
+				console.log('✅ Using fallback config data');
+				return fallbackConfig;
+			}
+		} catch (fallbackError) {
+			console.log('Fallback also failed:', fallbackError);
+		}
+		
+		// Final fallback - hardcoded values
 		return {
 			twitter_official: 'https://twitter.com/bualoi_official',
 			twitter_community: 'https://twitter.com/bualoi_community',
-			pump_fun_address: 'https://pump.fun/coin/PLACEHOLDER',
+			pump_fun_address: 'https://pump.fun/coin/7xKXtg2CW3DnBcjPiVNqHkETGSsyBESdLkB4gHqRWpD1',
 			contract_address: '7xKXtg2CW3DnBcjPiVNqHkETGSsyBESdLkB4gHqRWpD1',
-			dexscreener_pair: 'PLACEHOLDERPAIR'
+			dexscreener_pair: 'SOL_7xKXtg2CW3DnBcjPiVNqHkETGSsyBESdLkB4gHqRWpD1'
 		};
 	}
 }
