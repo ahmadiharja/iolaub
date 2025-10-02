@@ -37,7 +37,10 @@ export async function POST() {
 		console.error('Seed user error:', error);
 		
 		// If database is not available, provide fallback response
-		if (error.code === 'P6001' || error.message.includes('URL must start with')) {
+		const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+		const errorCode = (error as any)?.code;
+		
+		if (errorCode === 'P6001' || errorMessage.includes('URL must start with')) {
 			return NextResponse.json({ 
 				message: 'Database not available - using fallback authentication',
 				fallback: true,
@@ -50,7 +53,7 @@ export async function POST() {
 		
 		return NextResponse.json({ 
 			error: 'Failed to create admin user', 
-			details: error.message 
+			details: errorMessage 
 		}, { status: 500 });
 	}
 }

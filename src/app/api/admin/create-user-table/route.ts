@@ -28,7 +28,7 @@ export async function POST() {
 		console.error('Create table error:', error);
 		return NextResponse.json({ 
 			error: 'Failed to create User table', 
-			details: error.message,
+			details: error instanceof Error ? error.message : 'Unknown error',
 			fallback: true
 		}, { status: 500 });
 	}
