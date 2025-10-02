@@ -54,11 +54,23 @@ async function getDonations() {
 async function getProjectConfig() {
 	try {
 		// Use API endpoint instead of direct Prisma call to avoid client issues
-		const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001'}/api/config`, {
-			cache: 'no-store'
+		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
+		                (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3001');
+		
+		const response = await fetch(`${baseUrl}/api/config`, {
+			cache: 'no-store',
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		});
-		if (!response.ok) throw new Error('Failed to fetch config');
+		
+		if (!response.ok) {
+			console.log('Config API response not OK:', response.status, response.statusText);
+			throw new Error(`Config API failed: ${response.status}`);
+		}
+		
 		const config = await response.json();
+		console.log('✅ Config loaded successfully');
 		return config;
 	} catch (error) {
 		console.log('Config fetch error, using defaults:', error);
@@ -66,7 +78,7 @@ async function getProjectConfig() {
 			twitter_official: 'https://twitter.com/bualoi_official',
 			twitter_community: 'https://twitter.com/bualoi_community',
 			pump_fun_address: 'https://pump.fun/coin/PLACEHOLDER',
-			contract_address: '0x1234...ABCD',
+			contract_address: '7xKXtg2CW3DnBcjPiVNqHkETGSsyBESdLkB4gHqRWpD1',
 			dexscreener_pair: 'PLACEHOLDERPAIR'
 		};
 	}
